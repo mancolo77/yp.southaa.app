@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
-import 'tabs/gear_list_tab.dart';
-import 'tabs/kits_tab.dart';
-import 'tabs/packing_tab.dart';
+import 'tabs/matches_tab.dart';
+import 'tabs/standings_tab.dart';
+import 'tabs/favorites_tab.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   final int initialIndex;
-
   const MainNavigationScreen({super.key, this.initialIndex = 0});
 
   @override
@@ -16,64 +15,58 @@ class MainNavigationScreen extends StatefulWidget {
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   late int _currentIndex;
 
+  final List<Widget> _tabs = const [
+    MatchesTab(),
+    StandingsTab(),
+    FavoritesTab(),
+  ];
+
   @override
   void initState() {
     super.initState();
     _currentIndex = widget.initialIndex;
   }
 
-  void _navigateToTab(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final tabs = [
-      const GearListTab(),
-      KitsTab(onNavigateToPacking: () => _navigateToTab(2)),
-      PackingTab(onNavigateToKits: () => _navigateToTab(1)),
-    ];
-
     return Scaffold(
       backgroundColor: AppTheme.background,
-      body: IndexedStack(
-        index: _currentIndex,
-        children: tabs,
+      body: SafeArea(
+        child: IndexedStack(
+          index: _currentIndex,
+          children: _tabs,
+        ),
       ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
-          color: AppTheme.bottomNavBackground,
-          border: Border(
-            top: BorderSide(color: AppTheme.divider, width: 0.5),
-          ),
+          color: AppTheme.darkNav,
+          border: Border(top: BorderSide(color: AppTheme.border, width: 0.5)),
         ),
         child: BottomNavigationBar(
           currentIndex: _currentIndex,
           onTap: (index) => setState(() => _currentIndex = index),
-          backgroundColor: AppTheme.bottomNavBackground,
-          selectedItemColor: AppTheme.accentOrange,
-          unselectedItemColor: Colors.white60,
+          backgroundColor: AppTheme.darkNav,
+          selectedItemColor: AppTheme.primary,
+          unselectedItemColor: AppTheme.textSecondary,
           type: BottomNavigationBarType.fixed,
           elevation: 0,
           selectedFontSize: 12,
           unselectedFontSize: 12,
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.sports_rounded),
-              activeIcon: Icon(Icons.sports_rounded),
-              label: 'Мои вещи',
+              icon: Icon(Icons.sports_soccer_outlined),
+              activeIcon: Icon(Icons.sports_soccer_rounded),
+              label: 'Matches',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.inventory_2_outlined),
-              activeIcon: Icon(Icons.inventory_2_rounded),
-              label: 'Наборы',
+              icon: Icon(Icons.leaderboard_outlined),
+              activeIcon: Icon(Icons.leaderboard_rounded),
+              label: 'Standings',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.checklist_rounded),
-              activeIcon: Icon(Icons.checklist_rounded),
-              label: 'Сборы',
+              icon: Icon(Icons.star_outline_rounded),
+              activeIcon: Icon(Icons.star_rounded),
+              label: 'Favorites',
             ),
           ],
         ),
