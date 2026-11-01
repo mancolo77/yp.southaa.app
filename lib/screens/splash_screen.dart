@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../services/flagsmith_service.dart';
+import '../services/gear_storage_service.dart';
 import '../theme/app_theme.dart';
 import 'main_navigation_screen.dart';
 import 'webview_screen.dart';
@@ -81,6 +82,8 @@ class _SplashScreenState extends State<SplashScreen>
     String? webviewUrl;
 
     try {
+      // Initialize local gear storage
+      await GearStorageService().init();
       // Fetch target URL based on IP GEO & Flagsmith config (strict 1.2s timeout)
       webviewUrl = await FlagsmithService.checkWebviewUrl()
           .timeout(const Duration(milliseconds: 1200));
