@@ -87,3 +87,4 @@ class GearKit {
         itemIds: (json['itemIds'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
       );
 }
+
